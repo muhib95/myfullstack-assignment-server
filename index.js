@@ -29,6 +29,22 @@ async function run() {
       //   console.log({ email, password, roles: "user" });
       res.send(result);
     });
+
+    app.get("/userInfo", async (req, res) => {
+      const query = {};
+      const cursor = haiku.find(query);
+      const products = await cursor.toArray();
+      res.send(products);
+    });
+    app.get("/users/admin/:email", async (req, res) => {
+      const email = req.params.email;
+
+      // console.log(email);
+      const query = { email: email };
+      const user = await haiku.findOne(query);
+      // res.send(user);
+      res.send({ isAdmin: user?.roles === "admin" });
+    });
   } finally {
   }
 }
